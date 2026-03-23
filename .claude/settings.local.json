@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -v http://127.0.0.1:8788/mcp/sse)",
+      "Bash(curl -s http://127.0.0.1:8788/.well-known/oauth-authorization-server)",
+      "Bash(curl -s -X POST http://127.0.0.1:8788/register -H \"Content-Type: application/json\" -d '{\"\"redirect_uris\"\":[\"\"http://localhost:6274/oauth/callback\"\"],\"\"client_name\"\":\"\"MCP Inspector\"\"}')",
+      "Bash(curl -sv -X POST http://127.0.0.1:8788/register -H \"Content-Type: application/x-www-form-urlencoded\" -d 'redirect_uris[]=http://localhost:6274/oauth/callback&client_name=MCP+Inspector')",
+      "WebSearch"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"x:/Projects/UiPath Connector for Claude/uipath-orchestrator-mcp\" && npx tsc --noEmit 2>&1 | tail -20 || true",
+            "timeout": 30,
+            "statusMessage": "Type-checking..."
+          }
+        ]
+      }
+    ]
+  }
+}
